@@ -24,6 +24,11 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12"
     },
+    "suggest": {
+        "docusign/esign-client": "Official Docusign Client, For using JWT Authentication Methods",
+        "league/oauth2-client": "For oAuth2 Support",
+        "firebase/php-jwt": "For JWT Support"
+    },
     "require-dev": {
        "phpunit/phpunit": "^9.3.3"
     },
@@ -41,6 +46,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "0.4-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Tjphippen\\Docusign\\DocusignServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev"

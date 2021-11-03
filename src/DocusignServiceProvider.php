@@ -1,17 +1,37 @@
 <?php namespace Tjphippen\Docusign;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\AliasLoader;
 
 class DocusignServiceProvider extends ServiceProvider
 {
-    protected $defer = true;
+    protected $defer = false;
 
     public function boot()
     {
+        $configPath = __DIR__.'/config/config.php';
         $this->publishes([
-            __DIR__.'/config/config.php' => config_path('docusign.php'),
-        ]);
+            $configPath => config_path('docusign.php')
+        ], "config");
+        $this->mergeConfigFrom($configPath, "docusign");
+
+        Route::group($this->routeConfiguration(), function () {
+            Route::get('callback', [\Tjphippen\Docusign\DocusignController::class, 'callback']);
+        });
+    }
+
+    /**
+     * Get the Telescope route group configuration array.
+     *
+     * @return array
+     */
+    private function routeConfiguration()
+    {
+        return [
+            'prefix' => 'ds',
+            'middleware' => 'web',
+        ];
     }
 
     public function register()
@@ -31,5 +51,4 @@ class DocusignServiceProvider extends ServiceProvider
     {
         return ['docusign'];
     }
-
 }
