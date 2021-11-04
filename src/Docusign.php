@@ -22,8 +22,9 @@ class Docusign
     }
 
     public function getClient() {
+        //dd($this->oauth, $this->config, $this->oauth->hasValidToken());
         if ($this->config['auth_method'] != 'jwt') {
-            //$this->setBaseClient();
+            $this->setBaseClient();
             return $this->client;
         }
         if ($this->config['auth_method'] == 'jwt' && !$this->oauth->hasValidToken()) {

@@ -32,7 +32,7 @@ class DocusignJWTService
             foreach(\Illuminate\Support\Facades\Cache::store('redis')->get('DocusignAuth') as $key => $val) {
                 self::${$key} = $val;
             }
-            return;
+            self::$expires_in = self::$access_token->getExpiresIn();
         }
     }
 
@@ -43,7 +43,7 @@ class DocusignJWTService
     {
         if (
             is_null(self::$access_token)
-            || (time() + 120) > self::$expiresInTimestamp
+            || time() > (self::$expiresInTimestamp - self::TOKEN_REPLACEMENT_IN_SECONDS)
         ) {
             $this->login();
         }
@@ -56,7 +56,7 @@ class DocusignJWTService
     {
         if (
             is_null(self::$access_token)
-            || (time() + 120) < self::$expiresInTimestamp
+            || time() > (self::$expiresInTimestamp - self::TOKEN_REPLACEMENT_IN_SECONDS) // Token is created for one hour, if the token is going to expire within 10 minutes of the first call the token will be replaced
         ) {
             return false;
         }
@@ -134,6 +134,7 @@ class DocusignJWTService
             $JWT_CONFIG['ds_impersonated_user_id'],
             $privateKey,
             $jwt_scope,
+            60 * 10 // 600 minutes = 1 Hour
         );
 
         return $response[0];    //code...
