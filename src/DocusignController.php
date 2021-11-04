@@ -11,7 +11,8 @@ class DocusignController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function callback(Request $request) {
-        dd(\Docusign::getAuthService(), \Illuminate\Support\Facades\Cache::store('redis')->get('DocusignAuth'));
+        //\Illuminate\Support\Facades\Cache::store('redis')->forget('DocusignAuth');
+        //dd(\Docusign::getAuthService(), \Illuminate\Support\Facades\Cache::store('redis')->get('DocusignAuth'));
         if ($request->has('code')) {
             \Docusign::getAuthService()->login();
             return response()->make('Successful');

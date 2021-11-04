@@ -32,7 +32,6 @@ class DocusignJWTService
             foreach(\Illuminate\Support\Facades\Cache::store('redis')->get('DocusignAuth') as $key => $val) {
                 self::${$key} = $val;
             }
-            self::$expires_in = self::$access_token->getExpiresIn();
         }
     }
 
@@ -99,6 +98,7 @@ class DocusignJWTService
             throw $th;
         }
 
+        self::$expires_in = self::$access_token->getExpiresIn();
         self::$expiresInTimestamp = time() + self::$expires_in;
 
         if (is_null(self::$account)) {
@@ -109,6 +109,7 @@ class DocusignJWTService
             'access_token' => self::$access_token,
             'expiresInTimestamp' => self::$expiresInTimestamp,
             'account' => self::$account,
+            'expires_in' => self::$expires_in
         ]);
 
         if (self::$account) {
