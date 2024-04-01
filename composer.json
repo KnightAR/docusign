@@ -20,9 +20,9 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.12"
+        "laravel/framework": "^8.0|^9.0|^10.0|^11.0"
     },
     "suggest": {
         "docusign/esign-client": "Official Docusign Client, For using JWT Authentication Methods",
